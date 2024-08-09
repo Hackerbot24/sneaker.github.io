@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+    <title>Sneakers - Fall Limited Edition Sneakers</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .animate-slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        .lightbox {
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .close {
+            color: #fff;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100">
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <svg width="138" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M8.217 20c4.761 0 7.519-.753 7.519-4.606 0-3.4-3.38-4.172-6.66-4.682l-.56-.085-.279-.041-.35-.053c-2.7-.405-3.18-.788-3.18-1.471 0-.478.49-1.331 2.843-1.331 2.455 0 3.493.647 3.493 1.87v.134h4.281v-.133c0-2.389-1.35-5.238-7.774-5.238-5.952 0-7.201 2.584-7.201 4.752 0 3.097 2.763 4.086 7.223 4.675.21.028.433.054.659.081 1.669.197 3.172.42 3.172 1.585 0 1.01-1.615 1.222-3.298 1.222-2.797 0-3.784-.593-3.784-1.92v-.134H.002L0 14.926v.317c.008.79.118 1.913 1.057 2.862C2.303 19.362 4.712 20 8.217 20Zm13.21 0v-7.49c0-2.104.547-4.423 4.176-4.423 3.915 0 3.778 2.777 3.768 4.042V20h4.18v-7.768c0-2.264-.176-7.766-6.732-7.766-2.778 0-4.192.911-5.195 2.28h-.197V4.467H17.22V20h4.207Zm21.959 0c5.094 0 7.787-2.07 8.217-5.405H47.53c-.386 1.02-1.63 1.72-4.143 1.72-2.721 0-3.962-1.03-4.25-3.106h12.527c.24-2.13-.029-5.417-3.026-7.44v.005c-1.312-.915-3.056-1.465-5.251-1.465-5.24 0-8.336 2.772-8.336 7.845 0 5.17 3.02 7.846 8.336 7.846Zm4.099-9.574h-8.188c.486-1.574 1.764-2.431 4.089-2.431 2.994 0 3.755 1.267 4.099 2.431ZM70.499 20V4.457H66.29V6.74h-.176c-1.053-1.377-2.809-2.283-5.677-2.283-6.433 0-7.225 5.293-7.253 7.635v.137c0 2.092.732 7.771 7.241 7.771 2.914 0 4.684-.818 5.734-2.169h.131V20H70.5Zm-8.854-3.623c-3.996 0-4.447-3.032-4.447-4.148 0-1.21.426-4.148 4.455-4.148 3.631 0 4.374 2.044 4.374 4.148 0 2.35-.742 4.148-4.382 4.148ZM88.826 20l-6.529-9.045 6.588-6.488h-5.827l-6.836 6.756V0h-4.187v19.954h4.187V16.94l3.02-2.976L83.6 20h5.226Zm9.9 0c5.094 0 7.786-2.07 8.217-5.405h-4.074c-.387 1.02-1.63 1.72-4.143 1.72-2.721 0-3.962-1.03-4.25-3.106h12.527c.24-2.13-.029-5.417-3.026-7.44v.005c-1.312-.915-3.057-1.465-5.251-1.465-5.24 0-8.336 2.772-8.336 7.845 0 5.17 3.02 7.846 8.336 7.846Zm4.098-9.574h-8.187c.485-1.574 1.763-2.431 4.089-2.431 2.994 0 3.755 1.267 4.098 2.431ZM112.76 20v-6.97c0-2.103.931-4.542 4.05-4.542 1.33 0 2.393.236 2.785.346l.67-3.976c-.728-.16-1.626-.392-2.757-.392-2.665 0-3.622.794-4.486 2.282h-.262V4.466h-4.21V20h4.21Zm17.221 0c4.761 0 7.519-.753 7.519-4.606 0-3.4-3.38-4.172-6.66-4.682l-.56-.085-.279-.041-.349-.053c-2.701-.405-3.181-.788-3.181-1.471 0-.478.49-1.331 2.843-1.331 2.455 0 3.493.647 3.493 1.87v.134h4.282v-.133c0-2.389-1.35-5.238-7.775-5.238-5.952 0-7.201 2.584-7.201 4.752 0 3.097 2.763 4.086 7.224 4.675.21.028.432.054.658.081 1.669.197 3.172.42 3.172 1.585 0 1.01-1.615 1.222-3.298 1.222-2.796 0-3.784-.593-3.784-1.92v-.134h-4.319l-.001.301v.317c.008.79.117 1.913 1.056 2.862 1.246 1.257 3.655 1.895 7.16 1.895Z" fill="#1D2026" fill-rule="nonzero"/></svg>
+                <ul class="hidden md:flex space-x-6">
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Collections</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Men</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Women</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">About</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Contact</a></li>
+                </ul>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="cartBtn" class="relative">
+                    <i class="fas fa-shopping-cart text-gray-600 text-xl"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                </button>
+                <img src="images\image-avatar.png" alt="User Avatar" class="w-8 h-8 rounded-full">
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row md:space-x-8">
+            <div class="md:w-1/2">
+                <div class="relative">
+                    <img id="mainImage" src="images\image-product-1.jpg" alt="Fall Limited Edition Sneakers" class="w-full rounded-lg shadow-lg cursor-pointer animate-fade-in">
+                    <button class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md" onclick="changeImage(-1)">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <button class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md" onclick="changeImage(1)">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+                <div class="flex justify-between mt-4 space-x-4">
+                    <img src="images\image-product-1.jpg?random=1" alt="Thumbnail 1" class="w-1/4 rounded-lg cursor-pointer hover:opacity-75 transition duration-300" onclick="setMainImage(this.src)">
+                    <img src="images\image-product-2.jpg?random=2" alt="Thumbnail 2" class="w-1/4 rounded-lg cursor-pointer hover:opacity-75 transition duration-300" onclick="setMainImage(this.src)">
+                    <img src="images\image-product-3.jpg?random=3" alt="Thumbnail 3" class="w-1/4 rounded-lg cursor-pointer hover:opacity-75 transition duration-300" onclick="setMainImage(this.src)">
+                    <img src="images\image-product-4.jpg?random=4" alt="Thumbnail 4" class="w-1/4 rounded-lg cursor-pointer hover:opacity-75 transition duration-300" onclick="setMainImage(this.src)">
+                </div>
+            </div>
+            <div class="md:w-1/2 mt-8 md:mt-0">
+                <h2 class="text-orange-500 font-bold uppercase tracking-wide animate-slide-in">Sneaker Company</h2>
+                <h1 class="text-3xl font-bold mt-2 animate-slide-in">Fall Limited Edition Sneakers</h1>
+                <p class="text-gray-600 mt-4 animate-slide-in">These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.</p>
+                <div class="flex items-center mt-4">
+                    <span class="text-3xl font-bold">$125.00</span>
+                    <span class="ml-4 bg-orange-100 text-orange-500 px-2 py-1 rounded-md">50%</span>
+                </div>
+                <span class="text-gray-400 line-through">$250.00</span>
+                <div class="flex items-center mt-8 space-x-4">
+                    <div class="flex items-center bg-gray-100 rounded-md">
+                        <button class="px-4 py-2 text-orange-500 hover:text-orange-700" onclick="updateQuantity(-1)">-</button>
+                        <span id="quantity" class="px-4 py-2">0</span>
+                        <button class="px-4 py-2 text-orange-500 hover:text-orange-700" onclick="updateQuantity(1)">+</button>
+                    </div>
+                    <button id="addToCartBtn" class="bg-orange-500 text-black px-8 py-3 rounded-md hover:bg-orange-600 transition duration-300 flex items-center">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close">&times;</span>
+        <img class="lightbox-content" id="lightboxImage">
+    </div>
+
+    <div id="cart" class="fixed top-20 right-4 bg-white rounded-lg shadow-lg p-4 w-80 hidden animate-fade-in">
+        <h3 class="font-bold mb-4">Cart</h3>
+        <div id="cartItems"></div>
+        <button id="checkoutBtn" class="w-full bg-orange-500 text-white py-2 rounded-md mt-4 hover:bg-orange-600 transition duration-300">Checkout</button>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-between">
+                <div class="w-full md:w-1/4 mb-8 md:mb-0">
+                    <svg width="138" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M8.217 20c4.761 0 7.519-.753 7.519-4.606 0-3.4-3.38-4.172-6.66-4.682l-.56-.085-.279-.041-.35-.053c-2.7-.405-3.18-.788-3.18-1.471 0-.478.49-1.331 2.843-1.331 2.455 0 3.493.647 3.493 1.87v.134h4.281v-.133c0-2.389-1.35-5.238-7.774-5.238-5.952 0-7.201 2.584-7.201 4.752 0 3.097 2.763 4.086 7.223 4.675.21.028.433.054.659.081 1.669.197 3.172.42 3.172 1.585 0 1.01-1.615 1.222-3.298 1.222-2.797 0-3.784-.593-3.784-1.92v-.134H.002L0 14.926v.317c.008.79.118 1.913 1.057 2.862C2.303 19.362 4.712 20 8.217 20Zm13.21 0v-7.49c0-2.104.547-4.423 4.176-4.423 3.915 0 3.778 2.777 3.768 4.042V20h4.18v-7.768c0-2.264-.176-7.766-6.732-7.766-2.778 0-4.192.911-5.195 2.28h-.197V4.467H17.22V20h4.207Zm21.959 0c5.094 0 7.787-2.07 8.217-5.405H47.53c-.386 1.02-1.63 1.72-4.143 1.72-2.721 0-3.962-1.03-4.25-3.106h12.527c.24-2.13-.029-5.417-3.026-7.44v.005c-1.312-.915-3.056-1.465-5.251-1.465-5.24 0-8.336 2.772-8.336 7.845 0 5.17 3.02 7.846 8.336 7.846Zm4.099-9.574h-8.188c.486-1.574 1.764-2.431 4.089-2.431 2.994 0 3.755 1.267 4.099 2.431ZM70.499 20V4.457H66.29V6.74h-.176c-1.053-1.377-2.809-2.283-5.677-2.283-6.433 0-7.225 5.293-7.253 7.635v.137c0 2.092.732 7.771 7.241 7.771 2.914 0 4.684-.818 5.734-2.169h.131V20H70.5Zm-8.854-3.623c-3.996 0-4.447-3.032-4.447-4.148 0-1.21.426-4.148 4.455-4.148 3.631 0 4.374 2.044 4.374 4.148 0 2.35-.742 4.148-4.382 4.148ZM88.826 20l-6.529-9.045 6.588-6.488h-5.827l-6.836 6.756V0h-4.187v19.954h4.187V16.94l3.02-2.976L83.6 20h5.226Zm9.9 0c5.094 0 7.786-2.07 8.217-5.405h-4.074c-.387 1.02-1.63 1.72-4.143 1.72-2.721 0-3.962-1.03-4.25-3.106h12.527c.24-2.13-.029-5.417-3.026-7.44v.005c-1.312-.915-3.057-1.465-5.251-1.465-5.24 0-8.336 2.772-8.336 7.845 0 5.17 3.02 7.846 8.336 7.846Zm4.098-9.574h-8.187c.485-1.574 1.763-2.431 4.089-2.431 2.994 0 3.755 1.267 4.098 2.431ZM112.76 20v-6.97c0-2.103.931-4.542 4.05-4.542 1.33 0 2.393.236 2.785.346l.67-3.976c-.728-.16-1.626-.392-2.757-.392-2.665 0-3.622.794-4.486 2.282h-.262V4.466h-4.21V20h4.21Zm17.221 0c4.761 0 7.519-.753 7.519-4.606 0-3.4-3.38-4.172-6.66-4.682l-.56-.085-.279-.041-.349-.053c-2.701-.405-3.181-.788-3.181-1.471 0-.478.49-1.331 2.843-1.331 2.455 0 3.493.647 3.493 1.87v.134h4.282v-.133c0-2.389-1.35-5.238-7.775-5.238-5.952 0-7.201 2.584-7.201 4.752 0 3.097 2.763 4.086 7.224 4.675.21.028.432.054.658.081 1.669.197 3.172.42 3.172 1.585 0 1.01-1.615 1.222-3.298 1.222-2.796 0-3.784-.593-3.784-1.92v-.134h-4.319l-.001.301v.317c.008.79.117 1.913 1.056 2.862 1.246 1.257 3.655 1.895 7.16 1.895Z" fill="#1D2026" fill-rule="nonzero"/></svg>
+                    <p class="text-gray-400">Your go-to destination for stylish and comfortable sneakers.</p>
+                </div>
+                <div class="w-full md:w-1/4 mb-8 md:mb-0">
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Products</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/4 mb-8 md:mb-0">
+                    <h4 class="text-lg font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/4">
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="bg-gray-700 text-white px-4 py-2 rounded-l-md focus:outline-none">
+                        <button type="submit" class="bg-orange-500 text-white px-4 py-2 rounded-r-md hover:bg-orange-600 transition duration-300">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">&copy; 2024 sneakers. All rights reserved.</p>
+                <p>Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+                Coded by <a href="https://github.com/Hackerbot24">Hackerbot24</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const mainImage = document.getElementById('mainImage');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const cartBtn = document.getElementById('cartBtn');
+        const cart = document.getElementById('cart');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const quantityElement = document.getElementById('quantity');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        let currentImageIndex = 0;
+        const images = [
+            'images/image-product-1.jpg',
+            'images/image-product-2.jpg?random=1',
+            'images/image-product-3.jpg?random=2',
+            'images/image-product-4.jpg?random=3'
+        ];
+
+        function changeImage(direction) {
+            currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+            mainImage.src = images[currentImageIndex];
+        }
+
+        function setMainImage(src) {
+            mainImage.src = src;
+            currentImageIndex = images.indexOf(src);
+        }
+
+        mainImage.onclick = function() {
+            lightbox.style.display = "block";
+            lightboxImage.src = this.src;
+        }
+
+        lightbox.querySelector('.close').onclick = function() {
+            lightbox.style.display = "none";
+        }
+
+        cartBtn.onclick = function() {
+            cart.classList.toggle('hidden');
+        }
+
+        let quantity = 0;
+        function updateQuantity(change) {
+            quantity = Math.max(0, quantity + change);
+            quantityElement.textContent = quantity;
+        }
+
+        addToCartBtn.onclick = function() {
+            if (quantity > 0) {
+                const item = document.createElement('div');
+                item.className = 'flex items-center justify-between mb-4';
+                item.innerHTML = `
+                    <img src="${mainImage.src}" alt="Product" class="w-16 h-16 rounded-md">
+                    <div class="flex-grow ml-4">
+                        <h4 class="font-semibold">Fall Limited Edition Sneakers</h4>
+                        <p>$125.00 x ${quantity} <span class="font-bold">$${125 * quantity}.00</span></p>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600" onclick="this.parentElement.remove(); updateCartCount(-${quantity});">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItems.appendChild(item);
+                updateCartCount(quantity);
+                quantity = 0;
+                quantityElement.textContent = quantity;
+            }
+        }
+
+        function updateCartCount(change) {
+            const currentCount = parseInt(cartCount.textContent);
+            cartCount.textContent = currentCount + change;
+        }
+
+        checkoutBtn.onclick = function() {
+            alert('Proceeding to checkout!');
+        }
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.createElement('button');
+        mobileMenuBtn.className = 'md:hidden text-gray-600 hover:text-gray-900';
+        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        document.querySelector('nav > div').prepend(mobileMenuBtn);
+
+        const mobileMenu = document.createElement('div');
+        mobileMenu.className = 'md:hidden fixed inset-0 bg-white z-50 transform -translate-x-full transition-transform duration-300 ease-in-out';
+        mobileMenu.innerHTML = `
+            <div class="p-4">
+                <button class="text-gray-600 hover:text-gray-900 mb-4"><i class="fas fa-times"></i></button>
+                <ul class="space-y-4">
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Collections</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Men</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Women</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">About</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-gray-900">Contact</a></li>
+                </ul>
+            </div>
+        `;
+        document.body.appendChild(mobileMenu);
+
+        mobileMenuBtn.onclick = function() {
+            mobileMenu.classList.toggle('-translate-x-full');
+        }
+
+        mobileMenu.querySelector('button').onclick = function() {
+            mobileMenu.classList.add('-translate-x-full');
+        }
+    </script>
+</body>
+</html>
